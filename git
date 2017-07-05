@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Copyright 2017 Sean Kelleher. All rights reserved.
+
+# This script is a hacky way of working around the the current version of
+# RepoGate that only works with a particular version of Git.
+
+if [ "$1" = '--version' ] ; then
+    echo 'git version 2.1.4'
+    exit
+fi
+
+exec /usr/bin/git "$@"

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Copyright 2017 Sean Kelleher. All rights reserved.
+
+# This Dockerfile is for an "all-in-one" docker-based RepoGate deployment image.
+
+FROM node:8.1.2
+
+RUN \
+    apt-get update \
+    && apt-get install --quiet --assume-yes \
+        git \
+        python \
+        sudo
+
+# `repogate` needs `sudo` permissions in order to change ownership of files that
+# are copied in a later step. A workaround that allowed `repogate` to be removed
+# from this group would increase security.
+RUN \
+    useradd --password '' --create-home repogate \
+    && usermod --append --groups sudo repogate
+
+USER repogate
+
+RUN \
+    mkdir /home/repogate/rg_deploy
+
+EXPOSE 443
+EXPOSE 9418
+EXPOSE 9000
